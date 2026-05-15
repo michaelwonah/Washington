@@ -1,7 +1,11 @@
 const router = require('express').Router()
-const { createUser, verifyEmail } = require('../controller/userController')
-const { signUpValidator, changePasswordValidator } = require('../middleware/validator')
+const { createUser, login, resetpassword } = require('../controller/userController')
+const { signUpValidator, loginValidator, resetPasswordValidator } = require('../middleware/validator')
 
+ 
+router.post('/', signUpValidator, createUser);
+router.post('/login', loginValidator, login)
+router.post('/reset-password', resetPasswordValidator, resetpassword)
 
-router.post('/user', signUpValidator, createUser);
+module.exports = router 
  
