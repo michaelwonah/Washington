@@ -1,0 +1,63 @@
+const mongoose = require('mongoose')
+
+const userSchema = new mongoose.Schema({
+    fullName: {
+        type: String,
+        required: true,
+    },
+    lastName: {
+        type: String,
+        required: true,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        trim: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    confirmPassword:{
+        type: String,
+        required: true
+    },
+     otp: {
+      type: String,
+      trim: true,
+      default: () => {
+        return Math.round(Math.random() * 1e6)
+          .toString()
+          .padStart(6, "0");
+      },
+    },
+    profilePicture: {
+        secureUrl: {
+        type: String,
+        trim: true
+        },
+        publicId: {
+       type: String,
+        trim: true
+        }
+    },
+     isVerified: {
+      type: Boolean,
+      default: false,
+    },
+    role: {
+      type: String,
+      default: "user",
+    },
+    otpExpire:{
+        type: Date,
+         default: ()=>{
+        return Date.now() + (1000*60*7)
+}
+    },
+});
+
+const userModel = mongoose.model('userInfo', userSchema)
+
+module.exports = userModel;
