@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const userSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
@@ -49,7 +49,7 @@ const userSchema = new mongoose.Schema({
     },
     role: {
       type: String,
-      default: "user",
+      default: "admin",
     },
     otpExpire:{
         type: Date,
@@ -59,6 +59,6 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-const userModel = mongoose.model('userInfo', userSchema)
+const adminModel = mongoose.model('adminInfo', adminSchema)
 
-module.exports = userModel;
+module.exports = adminModel; 

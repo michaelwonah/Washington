@@ -1,10 +1,10 @@
 const router = require('express').Router()
-const { createUser, login, resetpassword } = require('../controller/userController')
+const { createAdmin, signIn, resetpassword } = require('../controller/adminController')
 const { signUpValidator, loginValidator, resetPasswordValidator } = require('../middleware/validator')
 
  
-router.post('/', signUpValidator, createUser);
-router.post('/login', loginValidator, login)
+router.post('/', signUpValidator, createAdmin);
+router.post('/signIn', loginValidator, signIn)
 router.post('/reset-password', resetPasswordValidator, resetpassword)
 
 module.exports = router 
