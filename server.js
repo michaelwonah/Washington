@@ -6,6 +6,8 @@ const express = require ('express')
 const PORT = process.env.PORT
 const swagger = require('./documentation')
 const userRouter = require('./routes/userRouter')
+const bookingRouter = require('./routes/bookingForm')
+const orderRouter = require('./routes/order' )
 
 
 const app = express(); 
@@ -14,6 +16,8 @@ app.use(express.json());
 app.use('/apisDocs', swaggerUi.serve, swaggerUi.setup(swagger))
 
 app.use('/api/v1/user', userRouter)
+app.use('/api/v1/booking', bookingRouter)
+app.use('/api/v1/order', orderRouter)
 
  
 mongoose.connect(process.env.MONGODB_URI).then(()=>{

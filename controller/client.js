@@ -1,36 +1,37 @@
-const userModel = require('../model/user')
+const clientModel = require('../model/client')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 let numberOfAttempts = 0
 
-exports.createUser = async(req, res)=>{
+exports.createClient = async(req, res)=>{
     try {
-        const {firstName, lastName, email, phoneNumber, password} = req.body
+        const {firstName, lastName, email, phoneNumber, password, address} = req.body
 
-        const existingUser = await userModel.findOne({ email: email.toLowerCase() })
-        if (existingUser) {
+        const existingClient = await clientModel.findOne({ email: email.toLowerCase() })
+        if (existingClient) {
             return res.status(400).json({
-                message: 'User already exists'
+                message: 'Client already exists'
             })  
         }
 
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
 
-        const Newuser = new userModel({
+        const NewClient = new clientModel({
             firstName,
             lastName,
             email: email.toLowerCase(),
             phoneNumber,
-            password:hashedPassword
+            password:hashedPassword,
+            address
         })
 
-        await Newuser.save()
+        await NewClient.save()
         res.status(201).json({
-            message:"users Created",
-            data:Newuser
+            message:"clients Created",
+            data:NewClient
         })
     } catch (error) {
         res.status(500).json({
@@ -43,9 +44,9 @@ exports.createUser = async(req, res)=>{
 exports.login = async (req, res) => {
     try {
         const {email, password} = req.body;
-        const user = await userModel.findOne({ email: email.toLowerCase() })
+        const client = await clientModel.findOne({ email: email.toLowerCase() })
 
-        if (!user){
+        if (!client){
             numberOfAttempts++
             return res.status(404).json({
                 message: 'Invalid Credentials'
@@ -89,30 +90,26 @@ exports.login = async (req, res) => {
 
 exports.resetpassword = async (req, res) => {
     try {
-        //Extract the required fields from the request body
         const {otp, password, email} = req.body;
-        //Find the user
-        const user = await userModel.findOne({ email: email.toLowerCase() });
+        const client = await clientModel.findOne({ email: email.toLowerCase() });
 
-        //check if the user exists
-        if(user == null) {
+        if(client == null) {
             return res.status(400).json({
                 message: 'Invalid credentials'
             })
         }
-        if (Date.now() > user.otpExpire || otp !== user.otp ) {
+        if (Date.now() > client.otpExpire || otp !== client.otp ) {
             return res.status(400).json({
                 message: 'Invalid OTP'
             })
         }
 
-        //Reset the user password with the encrypted and updated password
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        user.password = hashedPassword
+        client.password = hashedPassword
         //save the changes to the database
-        await user.save();
+        await client.save();
 
         //send a success response
         res.status(200).json({
