@@ -88,7 +88,7 @@ exports.resetPasswordValidator = (req, res, next) => {
         return res.status(400).json({
             message: error.details[0].message
         })
-    }
+    } 
     next()
 }
 
