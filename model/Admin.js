@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const clientSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
     firstName: {
         type: String,
         required: true,
@@ -24,10 +24,6 @@ const clientSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    address: {
-        type: String,
-        required: true
-    },
      otp: {
       type: String,
       trim: true,
@@ -37,13 +33,23 @@ const clientSchema = new mongoose.Schema({
           .padStart(6, "0");
       },
     },
+    profilePicture: {
+        secureUrl: {
+        type: String,
+        trim: true
+        },
+        publicId: {
+       type: String,
+        trim: true
+        }
+    },
      isVerified: {
       type: Boolean,
       default: false,
     },
     role: {
       type: String,
-      default: "user",
+      default: "admin",
     },
     otpExpire:{
         type: Date,
@@ -53,6 +59,6 @@ const clientSchema = new mongoose.Schema({
     },
 });
 
-const clientModel = mongoose.model('clientInfo', clientSchema)
+const adminModel = mongoose.model('adminInfo', adminSchema)
 
-module.exports = clientModel;
+module.exports = adminModel; 

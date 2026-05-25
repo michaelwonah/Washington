@@ -1,25 +1,25 @@
-const userModel = require('../model/user')
+const adminModel = require('../model/Admin')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
 let numberOfAttempts = 0
 
-exports.createUser = async(req, res)=>{
+exports.createAdmin = async(req, res)=>{
     try {
         const {firstName, lastName, email, phoneNumber, password} = req.body
 
-        const existingUser = await userModel.findOne({ email: email.toLowerCase() })
-        if (existingUser) {
-            return res.status(400).json({
-                message: 'User already exists'
-            })  
+        const existingAdmin = await adminModel.findOne({ email: email.toLowerCase() })
+        if (existingAdmin) {
+            return res.status(409).json({
+                message: 'Admin already exists'
+            })
         }
 
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
 
-        const Newuser = new userModel({
+        const Newadmin = new adminModel({
             firstName,
             lastName,
             email: email.toLowerCase(),
@@ -27,10 +27,10 @@ exports.createUser = async(req, res)=>{
             password:hashedPassword
         })
 
-        await Newuser.save()
+        await Newadmin.save()
         res.status(201).json({
-            message:"users Created",
-            data:Newuser
+            message:"admin Created",
+            data:Newadmin
         })
     } catch (error) {
         res.status(500).json({
@@ -40,19 +40,19 @@ exports.createUser = async(req, res)=>{
 }
 
 
-exports.login = async (req, res) => {
+exports.signIn = async (req, res) => {
     try {
         const {email, password} = req.body;
-        const user = await userModel.findOne({ email: email.toLowerCase() })
+        const admin = await adminModel.findOne({ email: email.toLowerCase() })
 
-        if (!user){
+        if (!admin){
             numberOfAttempts++
             return res.status(404).json({
                 message: 'Invalid Credentials'
             })                       
         }
 
-        const correctPassword = await bcrypt.compare(password, user.password)
+        const correctPassword = await bcrypt.compare(password, admin.password)
 
         if (!correctPassword) {
             numberOfAttempts++
@@ -68,7 +68,7 @@ exports.login = async (req, res) => {
         numberOfAttempts = 0
 
         const token = jwt.sign(
-            {id: user._id, role: user.role},
+            {id: admin._id, role: admin.role},
             process.env.SECRET_KEY,
             {expiresIn: '1d'}
         );
@@ -76,7 +76,7 @@ exports.login = async (req, res) => {
         res.status(200).json({
             message: 'Login successful',
             token,
-            user
+            admin
         })
     } catch (error) {
         console.log(error.message)
@@ -92,27 +92,27 @@ exports.resetpassword = async (req, res) => {
         //Extract the required fields from the request body
         const {otp, password, email} = req.body;
         //Find the user
-        const user = await userModel.findOne({ email: email.toLowerCase() });
+        const admin = await adminModel.findOne({ email: email.toLowerCase() });
 
-        //check if the user exists
-        if(user == null) {
+        //check if the admin exists
+        if(admin == null) {
             return res.status(400).json({
                 message: 'Invalid credentials'
             })
         }
-        if (Date.now() > user.otpExpire || otp !== user.otp ) {
+        if (Date.now() > admin.otpExpire || otp !== admin.otp ) {
             return res.status(400).json({
                 message: 'Invalid OTP'
             })
         }
 
-        //Reset the user password with the encrypted and updated password
+        //Reset the admin password with the encrypted and updated password
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        user.password = hashedPassword
+        admin.password = hashedPassword
         //save the changes to the database
-        await user.save();
+        await admin.save();
 
         //send a success response
         res.status(200).json({

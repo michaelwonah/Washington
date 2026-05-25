@@ -1,6 +1,8 @@
 const router = require("express").Router()
-const { bookLaundry } = require("../controller/bookingForm");
+const { bookLaundry, getbookings } = require("../controller/bookingForm");
+const { bookLaundryValidator } = require("../middleware/validator");
 
-router.post('/', bookLaundry);
+router.post('/', bookLaundryValidator, bookLaundry);
+router.get('/', getbookings)
 
 module.exports = router

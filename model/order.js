@@ -1,36 +1,29 @@
 const mongoose = require('mongoose')
 
 const orderSchema = new mongoose.Schema({
-    bookingId: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: 'bookingFormInfo'
-    },
     firstName: {
         type: String,
         required: true,
+        trim: true
     },
     surname: {
         type: String,
         required: true,
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
-    },
-    phoneNumber: {
-        type: String,
         trim: true
     },
     assignedDriver: {
         type: String,
+        trim: true,
+        default: null
+    },
+    email: {
+        type: String,
+        required: true,
         trim: true
     },
-    serviceType: {
+    phoneNumber: {
         type: String,
-        enum:["basic", "deluxe", "premium"],
-        default: "basic",
+        required: true,
         trim: true
     },
     address: {
@@ -38,22 +31,40 @@ const orderSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    amount: {
+        type: Number,
+        trim: true
+    },
+    pickupDate: {
+        type: String,
+        trim: true
+    },
+    pickupTime: {
+        type: String,
+        trim: true
+    },
+    serviceType: {
+        type: String,
+        enum: ["basic", "deluxe", "premium"],
+        default: "basic",
+        trim: true
+    },
     servicePackage: {
         type: String,
-        enum:["individual service", "packaged"],
+        enum: ["individual service", "packaged service"],
         default: "individual service",
         trim: true
     },
-    amount: {
+    specialInstruction: {
         type: String,
+        required: true,
         trim: true
     },
     status:{
         type: String,
-        enum:["assigned", "request", "processing", "ready", "delivered", "cancelled"],
-        default: "request",
+        enum: ["assigned", "request", "ready", "delivered", "cancelled"],
         trim: true
-    },
+    }
 });
 
 const orderModel = mongoose.model('orderInfo', orderSchema)

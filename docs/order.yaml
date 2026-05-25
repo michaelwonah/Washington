@@ -1,0 +1,218 @@
+openapi: 3.0.0
+info: 
+  title: documentation for order
+  version: 1.0.0
+  description: order documentation for washington
+paths: 
+  /api/v1/order:
+    post:
+      summary: this end point is to create order
+      tags: [order]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - firstName
+                - surname
+                - email
+                - phoneNumber
+                - address
+                - assignedDriver
+                - amount
+                - pickupDate
+                - pickupTime
+                - serviceType
+                - servicePackage
+                - specialInstruction
+              properties:
+                firstName:
+                  type: string
+                  example: john
+                surname:
+                  type: string
+                  example: deo
+                email: 
+                  type: string
+                  example: johndoe@gmail.com
+                phoneNumber: 
+                  type: string
+                  example: 09183748577
+                address: 
+                  type: string
+                assignedDriver:
+                  type: string
+                amount: 
+                  type: number
+                  example: 300000
+                pickupDate:
+                  type: day
+                  example: Thursday
+                pickupTime:
+                  type: time
+                  example: 10:00am
+                serviceType:
+                  type: string
+                  example: premium
+                servicePackage: 
+                  type: string
+                  example: individual service
+                specialInstruction:
+                  type: string 
+      responses: 
+        "201":
+          description: order successfully created
+        "400":
+          description: something went wrong
+
+  /api/v1/order/{bookingId}:
+    post:
+      summary: this end point is for assigning driver
+      parameters:
+        - in: path
+          name: bookingId
+          required: true
+          schema:
+            type: string
+      tags: [order]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - assignedDriver
+              properties:
+                assignedDriver: 
+                  type: string
+      responses: 
+        "201":
+          description: otp verified successfully
+        "400":
+          description: something went wrong
+
+  /api/v1/order/ready/{orderId}:
+    put:
+      summary: this end point is to update order status to ready 
+      tags: [order]
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: string
+      security: 
+        - bearerAuth: []
+      responses: 
+        "201":
+          description: order is ready
+        "400":
+          description: something went wrong
+
+  /api/v1/order/cancelled/{bookingId}:
+    put:
+      summary: this end point is to cancel order 
+      tags: [order]
+      parameters:
+        - in: path
+          name: bookingId
+          required: true
+          schema:
+            type: string
+      security: 
+        - bearerAuth: []
+      responses: 
+        "201":
+          description: order is cancelled
+        "400":
+          description: something went wrong
+
+  /api/v1/order/oneOrder:
+    get:
+      summary: this end point is to get one order 
+      tags: [order]
+      parameters:
+        - in: query
+          name: search
+          required: true
+          schema:
+            type: string
+          description: Customer firstName, surname, email or contact
+      security: 
+        - bearerAuth: []
+      responses: 
+        "201":
+          description: order is cancelled
+        "400":
+          description: something went wrong
+
+
+  /api/v1/order/delivered/order/{orderId}:
+    put:
+      summary: this end point is to update order status to delivered 
+      tags: [order]
+      parameters:
+        - in: path
+          name: orderId
+          required: true
+          schema:
+            type: string
+      security: 
+        - bearerAuth: []
+      responses: 
+        "201":
+          description: order is delivered
+        "400":
+          description: something went wrong
+
+  /api/v1/order/allOrder:
+    get:
+      summary: Get all orders
+      description: Returns all orders with processing count, delivered count, and total amount.
+      tags: [order]
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Orders fetched successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Orders fetched successfully
+                  data:
+                    type: object
+                    properties:
+                      allOrders:
+                        type: array
+                        items:
+                          type: object
+                      processing:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            _id:
+                              type: string
+                              example: assigned
+                            total:
+                              type: number
+                              example: 4
+                      delivered:
+                        type: number
+                        example: 10
+                      amount:
+                        type: number
+                        example: 250000
+        "401":
+          description: Token not found or invalid
+        "500":
+          description: Server error

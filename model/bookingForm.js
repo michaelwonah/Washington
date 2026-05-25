@@ -1,4 +1,4 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const bookingFormSchema = new mongoose.Schema({
     firstName: {
@@ -11,10 +11,14 @@ const bookingFormSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
+    assignedDriver: {
+        type: String,
+        trim: true,
+        default: null
+    },
     email: {
         type: String,
         required: true,
-        unique: true,
         trim: true
     },
     phoneNumber: {
@@ -24,6 +28,11 @@ const bookingFormSchema = new mongoose.Schema({
     },
     address: {
         type: String,
+        required: true,
+        trim: true
+    },
+    amount: {
+        type: Number,
         required: true,
         trim: true
     },
@@ -41,11 +50,23 @@ const bookingFormSchema = new mongoose.Schema({
         default: "basic",
         trim: true
     },
+    servicePackage: {
+        type: String,
+        enum: ["individual service", "packaged service"],
+        default: "individual service",
+        trim: true
+    },
      specialInstruction: {
         type: String,
         required: true,
         trim: true
     },
+    status:{
+        type: String,
+        enum: ["assigned", "request", "ready", "delivered", "cancelled"],
+        default: "request",
+        trim: true
+    }
 });
 
 const bookingFormModel = mongoose.model('bookingFormInfo', bookingFormSchema)

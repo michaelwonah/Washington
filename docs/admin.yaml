@@ -1,8 +1,8 @@
 paths:
-  /api/v1/user:
+  /api/v1/admin:
     post:
-      summary: Create user
-      tags: [users]
+      summary: Create admin
+      tags: [admins]
       requestBody:
         required: true
         content: 
@@ -10,7 +10,8 @@ paths:
             schema:
               type: object
               required:
-                - fullname
+                - firstName
+                - lastName
                 - email
                 - phoneNumber
                 - password
@@ -34,17 +35,17 @@ paths:
                   example: Thecurve@
       responses:
         "201":  
-          description: user created successfully
+          description: admin created successfully
         "400":
           description: validation error
         "409":
-          description: user already exists
+          description: admin already exists
 
 
-  /api/v1/user/login:
+  /api/v1/admin/signIn:
     post:
-      summary: Login user
-      tags: [users]
+      summary: signIn admin
+      tags: [admins]
       requestBody:
         required: true
         content: 
@@ -68,15 +69,15 @@ paths:
         "400":
           description: invalid credentials or validation error
         "404":
-          description: user not found
+          description: admin not found
         "429":
           description: account locked after too many failed attempts
 
 
-  /api/v1/user/reset-password:
+  /api/v1/admin/reset-password:
     post:
       summary: Reset password 
-      tags: [users]
+      tags: [admins]
       requestBody:
         required: true
         content: 
