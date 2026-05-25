@@ -1,0 +1,76 @@
+openapi: 3.0.0
+info: 
+  title: documentation for booking form
+  version: 1.0.0
+  description: booking form documentation for washington
+paths: 
+  /api/v1/booking:
+    post:
+      summary: this end point is to create a booking
+      tags: [booking]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - firstName
+                - surname
+                - email
+                - phoneNumber
+                - address
+                - amount
+                - pickupDate
+                - pickupTime
+                - serviceType
+                - servicePackage
+                - specialInstruction
+              properties:
+                firstName:
+                  type: string
+                  example: john
+                surname:
+                  type: string
+                  example: deo
+                email: 
+                  type: string
+                  example: johndoe@gmail.com
+                phoneNumber: 
+                  type: string
+                  example: 09183748577
+                address: 
+                  type: string
+                amount: 
+                  type: number
+                  example: 300000
+                pickupDate:
+                  type: day
+                  example: Thursday
+                pickupTime:
+                  type: time
+                  example: 10:00am
+                serviceType:
+                  type: string
+                  example: premium
+                servicePackage: 
+                  type: string
+                  example: individual service
+                specialInstruction:
+                  type: string 
+      responses: 
+        "201":
+          description: booking successfully created
+        "400":
+          description: something went wrong
+
+    get:
+      summary: this end point is to get all booking 
+      tags: [booking]
+      security: 
+        - bearerAuth: []
+      responses: 
+        "201":
+          description: All bookings found
+        "400":
+          description: something went wrong
