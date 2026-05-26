@@ -25,7 +25,7 @@ const options = {
         }
     },
     apis:[
-        "./docs/admin.yaml","./docs/bookingForm.yaml","./docs/order.yaml","./docs/customer.yaml"
+        "./docs/admin.yaml","./docs/bookingForm.yaml","./docs/order.yaml","./docs/customer.yaml","./docs/businessName.yaml","./docs/password.yaml","./docs/pickupDelivery.yaml"
     ],
 }
 

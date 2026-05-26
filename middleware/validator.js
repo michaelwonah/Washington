@@ -247,3 +247,121 @@ exports.assignedDriverValidator = (req, res, next)=>{
     }
     next()
 }
+
+exports.pickupDeliveryValidator = (req, res, next) => {
+    const schema = joi.object({
+        orderId: joi.string().hex().length(24).required().messages({
+            'any.required': 'Order id is required',
+            'string.empty': 'Order id cannot be empty',
+            'string.hex': 'Order id must be a valid id',
+            'string.length': 'Order id must be 24 characters long'
+        }),
+        clientName: joi.string().trim().min(2).max(100).required().messages({
+            'any.required': 'Client name is required',
+            'string.empty': 'Client name cannot be empty',
+            'string.min': 'Client name cannot be less than 2 characters',
+            'string.max': 'Client name cannot be more than 100 characters'
+        }),
+        contact: joi.string().trim().min(5).max(50).required().messages({
+            'any.required': 'Contact is required',
+            'string.empty': 'Contact cannot be empty',
+            'string.min': 'Contact cannot be less than 5 characters',
+            'string.max': 'Contact cannot be more than 50 characters'
+        }),
+        status: joi.string().valid('scheduled', 'inprogress', 'completed').default('scheduled').messages({
+            'any.only': 'Status must be either scheduled, inprogress, or completed'
+        })
+    })
+
+    const { error } = schema.validate(req.body)
+    if (error) {
+        return res.status(400).json({
+            message: error.details[0].message
+        })
+    }
+    next()
+}
+
+exports.pickupDeliveryStatusValidator = (req, res, next) => {
+    const schema = joi.object({
+        status: joi.string().valid('scheduled', 'inprogress', 'completed').required().messages({
+            'any.required': 'Status is required',
+            'string.empty': 'Status cannot be empty',
+            'any.only': 'Status must be either scheduled, inprogress, or completed'
+        })
+    })
+
+    const { error } = schema.validate(req.body)
+    if (error) {
+        return res.status(400).json({
+            message: error.details[0].message
+        })
+    }
+    next()
+}
+
+exports.businessNameValidator = (req, res, next) =>{
+    const schema = joi.object({
+        adminId: joi.string().hex().length(24).required().messages({
+            'any.required': 'admin id is required',
+            'string.empty': 'admin id cannot be empty',
+            'string.hex': 'admin id must be a valid id',
+            'string.length': 'admin id must be 24 characters long'
+        }), 
+        businessName: joi.string().trim().min(2).max(100).required().messages({
+            'any.required': 'business name is required',
+            'string.empty': 'business name cannot be empty',
+            'string.min': 'business name cannot be less than 2 characters',
+            'string.max': 'business name cannot be more than 100 characters'
+        }),
+       email: joi.string().email().required().messages({
+            'any.required': "email is required",
+            'string.empty': "email cannot be empty",
+            "string.email": "email must be a valid email"
+        }),
+        phoneNumber: joi.string().pattern(/^\d{11}$/).required().messages({
+            'any.required': "phone number is required",
+            "string.empty": "phone number cannot be empty",
+            'string.pattern.base': "phone number must be 11 digits long"
+        }),
+         address: joi.string().min(3).max(50).trim().required().messages({
+            'any.required': "Address is required",
+            "string.empty": "Address cannot be empty",
+            'string pattern.base': "Address cannot be less than 3 and must not be more than 50 characters"
+        }),
+    })
+    const { error } = schema.validate(req.body)
+    if (error) {
+        return res.status(400).json({
+            message: error.details[0].message
+        })
+    }
+    next()
+}
+
+exports.passwordChangeValidator = (req, res, next) => {
+    const schema = joi.object({
+        currentPassword: joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/).required().messages({
+            'any.required': "Current password is required",
+            "string.empty": "Current password cannot be empty",
+            'string.pattern.base': "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character"
+        }),
+        newPassword: joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/).required().messages({
+            'any.required': "New password is required",
+            "string.empty": "New password cannot be empty",
+            'string.pattern.base': "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character"
+        }),
+        confirmNewPassword: joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/).required().messages({
+            'any.required': "Confirm new password is required",
+            "string.empty": "Confirm new password cannot be empty",
+            'string.pattern.base': "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character"
+        })
+    })
+    const { error } = schema.validate(req.body)
+    if (error) {
+        return res.status(400).json({
+            message: error.details[0].message
+        })
+    }
+    next()
+}

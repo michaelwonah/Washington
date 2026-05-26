@@ -1,0 +1,147 @@
+openapi: 3.0.0
+info:
+  title: documentation for pickup and delivery
+  version: 1.0.0
+  description: pickup and delivery documentation for washington
+paths:
+  /api/v1/pickup-delivery:
+    post:
+      summary: this end point is to create pickup and delivery
+      tags: [pickupDelivery]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - orderId
+                - clientName
+                - contact
+              properties:
+                orderId:
+                  type: string
+                  example: 6650a4a3f2a4b6d1c8e9f001
+                clientName:
+                  type: string
+                  example: John Doe
+                contact:
+                  type: string
+                  example: 09183748577
+                status:
+                  type: string
+                  enum:
+                    - scheduled
+                    - inprogress
+                    - completed
+                  example: scheduled
+      responses:
+        "201":
+          description: Pickup and delivery created successfully
+        "400":
+          description: Valid order id is required or validation error
+        "401":
+          description: Token not found or invalid
+        "404":
+          description: Order not found
+
+    get:
+      summary: this end point is to get all pickup and deliveries
+      tags: [pickupDelivery]
+      security:
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Pickup and deliveries fetched successfully
+        "401":
+          description: Token not found or invalid
+
+
+  /api/v1/pickup-delivery/{pickupDeliveryId}:
+    get:
+      summary: this end point is to get one pickup and delivery
+      tags: [pickupDelivery]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: pickupDeliveryId
+          required: true
+          schema:
+            type: string
+          description: Pickup and delivery id
+      responses:
+        "200":
+          description: Pickup and delivery fetched successfully
+        "400":
+          description: Valid pickup and delivery id is required
+        "401":
+          description: Token not found or invalid
+        "404":
+          description: Pickup and delivery not found
+
+
+    delete:
+      summary: this end point is to delete pickup and delivery
+      tags: [pickupDelivery]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: pickupDeliveryId
+          required: true
+          schema:
+            type: string
+          description: Pickup and delivery id
+      responses:
+        "200":
+          description: Pickup and delivery deleted successfully
+        "400":
+          description: Valid pickup and delivery id is required
+        "401":
+          description: Token not found or invalid
+        "404":
+          description: Pickup and delivery not found
+
+
+  /api/v1/pickup-delivery/status/{pickupDeliveryId}:
+    put:
+      summary: this end point is to update pickup and delivery status
+      tags: [pickupDelivery]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: pickupDeliveryId
+          required: true
+          schema:
+            type: string
+          description: Pickup and delivery id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - status
+              properties:
+                status:
+                  type: string
+                  enum:
+                    - scheduled
+                    - inprogress
+                    - completed
+                  example: completed
+      responses:
+        "201":
+          description: Pickup and delivery status updated successfully
+        "400":
+          description: Valid pickup and delivery id is required or validation error
+        "401":
+          description: Token not found or invalid
+        "404":
+          description: Pickup and delivery not found
+

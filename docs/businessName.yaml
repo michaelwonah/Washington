@@ -1,0 +1,83 @@
+openapi: 3.0.0
+info:
+  title: business name documentation
+  version: 1.0.0
+  description: business name documentation for washington
+paths:
+  /api/v1/business-name:
+    post:
+      summary: create business name
+      tags: [businessName]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - businessName
+                - email
+                - phoneNumber
+                - address
+              properties:
+                businessName:
+                  type: string
+                  example: washington logistics ltd
+                email:
+                  type: string
+                  example: info@washingtonlogistics.com
+                phoneNumber:
+                  type: string
+                  example: 09099555611
+                address:
+                  type: string
+                  example: 123 Main Street, Anytown, USA
+      responses:
+        "201":
+          description: Business name successfully created
+        "401":
+          description: Token not found or invalid
+        "409":
+          description: Business name already exists
+        "500":
+          description: Server error
+    patch:
+      summary: update business name
+      tags: [businessName]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - businessName
+                - email
+                - phoneNumber
+                - address
+              properties:
+                businessName:
+                  type: string
+                  example: washington limited
+                email:
+                  type: string
+                  example: washingtonlogisticsinfo@gmail.com
+                phoneNumber:
+                  type: string
+                  example: 09099453568
+                address:
+                  type: string
+                  example: 1 Bale Street, Anytown
+      responses:
+        "200":
+          description: Business name successfully updated
+        "401":
+          description: Token not found or invalid
+        "404":
+          description: Business name not found
+        "500":
+          description: Server error

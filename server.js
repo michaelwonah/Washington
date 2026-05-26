@@ -8,6 +8,9 @@ const adminRouter = require('./routes/adminRouter')
 const bookingRouter = require('./routes/bookingForm')
 const orderRouter = require('./routes/order')
 const customerRouter = require('./routes/customer')
+const pickupDeliveryRouter = require('./routes/pickupDelivery')
+const businessNameRouter = require('./routes/businessName')
+const passwordRouter = require('./routes/password')
 
 
 const app = express(); 
@@ -19,6 +22,9 @@ app.use('/api/v1/admin', adminRouter)
 app.use('/api/v1/booking', bookingRouter)
 app.use('/api/v1/order', orderRouter)
 app.use('/api/v1/customer', customerRouter)
+app.use('/api/v1/pickup-delivery', pickupDeliveryRouter)
+app.use('/api/v1/business-name', businessNameRouter)
+app.use('/api/v1/password', passwordRouter)
 
  
 mongoose.connect(process.env.MONGODB_URI).then(()=>{
