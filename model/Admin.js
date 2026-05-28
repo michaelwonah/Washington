@@ -17,24 +17,25 @@ const adminSchema = new mongoose.Schema({
         unique: true,
         trim: true
     },
-    phoneNumber: {
+    password: {
         type: String,
         required: true,
         trim: true
     },
-    password: {
+    confirmPassword: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
-     otp: {
-      type: String,
-      trim: true,
-      default: () => {
-        return Math.round(Math.random() * 1e6)
-          .toString()
-          .padStart(6, "0");
-      },
-    },
+    //  otp: {
+    //   type: String,
+    //   trim: true,
+    //   default: () => {
+    //     return Math.round(Math.random() * 1e6)
+    //       .toString()
+    //       .padStart(6, "0");
+    //   },
+    // },
     profilePicture: {
         secureUrl: {
         type: String,
@@ -53,12 +54,12 @@ const adminSchema = new mongoose.Schema({
       type: String,
       default: "admin",
     },
-    otpExpire:{
-        type: Date,
-         default: ()=>{
-        return Date.now() + (1000*60*7)
-}
-    },
+//     otpExpire:{
+//         type: Date,
+//          default: ()=>{
+//         return Date.now() + (1000*60*7)
+// }
+//     },
     resetPasswordToken: {
         type: String,
         trim: true

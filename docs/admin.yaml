@@ -26,13 +26,14 @@ paths:
                   type: string
                   format: email
                   example: leonardo@gmail.com
-                phoneNumber:
-                  type: string
-                  example: 09124545904
                 password:
                   type: string
+                  example: Thecurve@123
                   format: password
-                  example: Thecurve@
+                confirmPassword:
+                  type: string
+                  format: password
+                  example: Thecurve@123
       responses:
         "201":  
           description: admin created successfully
