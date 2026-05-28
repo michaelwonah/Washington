@@ -6,6 +6,21 @@ const passwordSchema = new mongoose.Schema({
         ref: 'adminInfo',
         required: true
     },
+    currentPassword: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    newPassword: {
+        type: String,
+        required: true,
+        trim: true
+    }, 
+    confirmNewPassword: {
+        type: String,
+        required: true,
+        trim: true
+    },
     changedAt: {
         type: Date,
         default: Date.now

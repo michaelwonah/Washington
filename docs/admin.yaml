@@ -78,6 +78,7 @@ paths:
   /api/v1/admin/reset-password:
     post:
       summary: Send reset password link
+      description: Creates a 15-minute reset token and emails the reset link to the admin.
       tags: [admins]
       requestBody:
         required: true
@@ -94,41 +95,8 @@ paths:
                   example: leonardo@gmail.com
       responses:
         "200":
-          description: password reset link sent to email
-        "400":
-          description: invalid credentials or validation error
-
-  /api/v1/admin/reset-password/{token}:
-    post:
-      summary: Reset password with email link token
-      tags: [admins]
-      parameters:
-        - in: path
-          name: token
-          required: true
-          schema:
-            type: string
-          description: Reset password token from the email link
-      requestBody:
-        required: true
-        content: 
-          application/json:
-            schema:
-              type: object
-              required:
-                - password
-                - confirmPassword
-              properties: 
-                password:
-                  type: string
-                  format: password
-                  example: NewPass@123
-                confirmPassword:
-                  type: string
-                  format: password
-                  example: NewPass@123
-      responses:
-        "200":
           description: password reset successfully
         "400":
-          description: invalid or expired reset link, or validation error
+          description: invalid email
+
+ 

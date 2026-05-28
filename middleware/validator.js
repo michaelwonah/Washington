@@ -7,10 +7,10 @@ exports.signUpValidator = (req, res, next)=>{
          "string.empty": "firstName cannot be empty",
         'string.pattern.base': "firstName must be at least 4 characters long and contain only letters and spaces"
          }),
-        lastName: joi.string().trim().pattern(/^[A-Za-z\s]{4,}$/).required().messages({
+        lastName: joi.string().trim().pattern(/^[A-Za-z\s]{3,}$/).required().messages({
             'any.required': "lastName is required",
             "string.empty": "lastName cannot be empty",
-            'string.pattern.base': "lastName must be at least 4 characters long and contain only letters and spaces"
+            'string.pattern.base': "lastName must be at least 3 characters long and contain only letters and spaces"
         }),
         email: joi.string().email().required().messages({
             'any.required': "email is required",
@@ -359,10 +359,10 @@ exports.passwordChangeValidator = (req, res, next) => {
             "string.empty": "New password cannot be empty",
             'string.pattern.base': "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character"
         }),
-        confirmNewPassword: joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/).required().messages({
+        confirmNewPassword: joi.string().required().valid(joi.ref('newPassword')).messages({
+            "any.only": "Confirm new password must match new password",
             'any.required': "Confirm new password is required",
             "string.empty": "Confirm new password cannot be empty",
-            'string.pattern.base': "Password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character"
         })
     })
     const { error } = schema.validate(req.body)

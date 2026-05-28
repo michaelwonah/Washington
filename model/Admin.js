@@ -60,13 +60,13 @@ const adminSchema = new mongoose.Schema({
 //         return Date.now() + (1000*60*7)
 // }
 //     },
-    resetPasswordToken: {
-        type: String,
-        trim: true
-    },
-    resetPasswordExpire: {
-        type: Date
-    },
+    // resetPasswordToken: {
+    //     type: String,
+    //     trim: true
+    // },
+    // resetPasswordExpire: {
+    //     type: Date
+    // },
 });
 
 const adminModel = mongoose.model('adminInfo', adminSchema)

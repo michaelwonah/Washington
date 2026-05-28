@@ -6,10 +6,10 @@ require('dotenv').config()
 
 exports.createOrder = async (req, res) => {
   try {
-    const { firstName, surname, email, phoneNumber, address, assignedDriver, pickupDate, pickupTime, serviceType, servicePackage, amount, specialInstruction } = req.body
+    const { name, surname, email, phoneNumber, address, assignedDriver, pickupDate, pickupTime, serviceType, servicePackage, amount, specialInstruction } = req.body
+    const fullName = `${name} ${surname}`
     const NewOrder = new orderModel({
-      firstName,
-      surname,
+      name: fullName,
       email,
       phoneNumber,
       address,

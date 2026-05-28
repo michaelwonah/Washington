@@ -6,7 +6,7 @@ const bookingFormSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    surname: {
+    surName: {
         type: String,
         required: true,
         trim: true

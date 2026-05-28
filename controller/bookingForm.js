@@ -3,10 +3,10 @@ require('dotenv').config()
 
 exports.bookLaundry = async(req, res)=>{
     try {
-        const {firstName, surname, email, phoneNumber, address, amount, pickupDate, pickupTime, serviceType, servicePackage, specialInstruction} = req.body
+        const {firstName, surName, email, phoneNumber, address, amount, pickupDate, pickupTime, serviceType, servicePackage, specialInstruction} = req.body
         const Newbooking = new bookingFormModel({
             firstName,
-            surname,
+            surName,
             email: email.toLowerCase(),
             phoneNumber,
             address,

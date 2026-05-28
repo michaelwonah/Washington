@@ -34,6 +34,7 @@ exports.changePassword = async (req, res) => {
 
         const salt = await bcrypt.genSalt(10)
         admin.password = await bcrypt.hash(newPassword, salt)
+        admin.confirmPassword = admin.password
         await admin.save()
 
         await passwordModel.create({ adminId })
