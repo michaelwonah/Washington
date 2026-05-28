@@ -1,13 +1,37 @@
 const adminModel = require('../model/Admin')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const crypto = require('crypto')
+const brevo = require('@getbrevo/brevo')
+const { resetPasswordTemplate, resetPasswordSuccessfulTemplate } = require('../email')
 require('dotenv').config()
 
 let numberOfAttempts = 0
 
+const sendEmail = async ({ to, subject, htmlContent }) => {
+    const emailApi = new brevo.TransactionalEmailsApi()
+    emailApi.authentications.apiKey.apiKey = process.env.BREVO_API_KEY
+
+    const message = new brevo.SendSmtpEmail()
+    message.subject = subject
+    message.htmlContent = htmlContent
+    message.sender = {
+        name: process.env.SENDER_NAME || 'Washington Logistics',
+        email: process.env.SENDER_EMAIL || 'washingtonlogisticsinfo@gmail.com'
+    }
+    message.to = [to]
+
+    return emailApi.sendTransacEmail(message)
+}
+
+const createResetPasswordLink = (token) => {
+    const resetPasswordUrl = process.env.RESET_PASSWORD_URL || 'http://localhost:3000/reset-password'
+    return `${resetPasswordUrl}/${token}`
+}
+
 exports.createAdmin = async(req, res)=>{
     try {
-        const {firstName, lastName, email, phoneNumber, password} = req.body
+        const {firstName, lastName, email, password, confirmPassword} = req.body
 
         const existingAdmin = await adminModel.findOne({ email: email.toLowerCase() })
         if (existingAdmin) {
@@ -15,6 +39,11 @@ exports.createAdmin = async(req, res)=>{
                 message: 'Admin already exists'
             })
         }
+        if (password !== confirmPassword) {
+            return res.status(400).json({
+                message: 'Passwords do not match'
+            })
+        }   
 
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt)
@@ -23,8 +52,8 @@ exports.createAdmin = async(req, res)=>{
             firstName,
             lastName,
             email: email.toLowerCase(),
-            phoneNumber,
-            password:hashedPassword
+            password:hashedPassword,
+            confirmPassword: hashedPassword
         })
 
         await Newadmin.save()
@@ -87,34 +116,83 @@ exports.signIn = async (req, res) => {
 }
 
 
-exports.resetpassword = async (req, res) => {
+exports.requestPasswordReset = async (req, res) => {
     try {
-        //Extract the required fields from the request body
-        const {otp, password, email} = req.body;
-        //Find the user
+        const { email } = req.body;
         const admin = await adminModel.findOne({ email: email.toLowerCase() });
 
-        //check if the admin exists
         if(admin == null) {
             return res.status(400).json({
                 message: 'Invalid credentials'
             })
         }
-        if (Date.now() > admin.otpExpire || otp !== admin.otp ) {
+
+        const resetToken = crypto.randomBytes(32).toString('hex')
+        const hashedResetToken = crypto
+            .createHash('sha256')
+            .update(resetToken)
+            .digest('hex')
+
+        admin.resetPasswordToken = hashedResetToken
+        admin.resetPasswordExpire = Date.now() + (1000 * 60 * 15)
+        await admin.save()
+
+        const resetLink = createResetPasswordLink(resetToken)
+
+        await sendEmail({
+            to: { email: admin.email, name: `${admin.firstName} ${admin.lastName}` },
+            subject: 'Reset your Washington Logistics password',
+            htmlContent: resetPasswordTemplate({
+                name: admin.firstName,
+                resetLink
+            })
+        })
+
+        res.status(200).json({
+            message: 'Password reset link sent to email'
+        })
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        })
+    }
+}
+
+exports.resetpassword = async (req, res) => {
+    try {
+        const { token } = req.params
+        const { password } = req.body
+        const hashedResetToken = crypto
+            .createHash('sha256')
+            .update(token)
+            .digest('hex')
+
+        const admin = await adminModel.findOne({
+            resetPasswordToken: hashedResetToken,
+            resetPasswordExpire: { $gt: Date.now() }
+        })
+
+        if(admin == null) {
             return res.status(400).json({
-                message: 'Invalid OTP'
+                message: 'Invalid or expired reset link'
             })
         }
 
-        //Reset the admin password with the encrypted and updated password
         const salt = await bcrypt.genSalt(10)
         const hashedPassword = await bcrypt.hash(password, salt);
 
         admin.password = hashedPassword
-        //save the changes to the database
+        admin.resetPasswordToken = undefined
+        admin.resetPasswordExpire = undefined
+
         await admin.save();
 
-        //send a success response
+        await sendEmail({
+            to: { email: admin.email, name: `${admin.firstName} ${admin.lastName}` },
+            subject: 'Your Washington Logistics password was reset',
+            htmlContent: resetPasswordSuccessfulTemplate(admin.firstName)
+        })
+
         res.status(200).json({
             message: 'Password reset successfully'
         })

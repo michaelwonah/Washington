@@ -5,12 +5,12 @@ exports.resetPasswordTemplate = (data)=> {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Your SPLITA Password</title>
+    <title>Reset Your Washington Logistics Password</title>
     <style>
         /* Mobile Styles */
         @media screen and (max-width: 600px) {
             .container { width: 100% !important; border-radius: 0px !important; }
-            .otp-code { font-size: 32px !important; letter-spacing: 6px !important; }
+            .reset-button { width: 100% !important; box-sizing: border-box; text-align: center; }
             .content { padding: 30px 20px !important; }
         }
     </style>
@@ -26,7 +26,7 @@ exports.resetPasswordTemplate = (data)=> {
                         <!-- Brand Header -->
                         <tr>
                             <td align="center" style="padding: 30px 20px; background-color: #ffffff; border-bottom: 1px solid #eeeeee;">
-                                <h1 style="margin: 0; color: #00d2ff; font-size: 24px; font-weight: 800; letter-spacing: 1px;">SPLITA</h1>
+                                <h1 style="margin: 0; color: #00d2ff; font-size: 24px; font-weight: 800; letter-spacing: 1px;">Washington Logistics</h1>
                             </td>
                         </tr>
 
@@ -35,18 +35,20 @@ exports.resetPasswordTemplate = (data)=> {
                             <td class="content" style="padding: 40px; text-align: center; color: #333333;">
                                 <h2 style="margin: 0 0 15px; font-size: 22px; font-weight: 700; color: #1a1a1a;">Password Reset</h2>
                                 <p style="font-size: 16px; line-height: 1.5; margin: 0 0 25px; color: #666666;">
-                                    Hi ${data.name}, we received a request to reset your password. Use the code below to proceed:
+                                    Hi ${data.name}, we received a request to reset your password. Click the button below to create a new password:
                                 </p>
                                 
-                                <!-- OTP Box -->
-                                <div style="background-color: #f8fafc; border: 2px dashed #00d2ff; border-radius: 12px; padding: 25px; margin: 20px 0;">
-                                    <span class="otp-code" style="font-family: 'Courier New', Courier, monospace; font-size: 38px; font-weight: bold; letter-spacing: 10px; color: #1a1a1a; display: block;">
-                                        ${data.otp}
-                                    </span>
-                                </div>
+                                <a href="${data.resetLink}" class="reset-button" style="display: inline-block; background-color: #00d2ff; color: #ffffff; padding: 16px 35px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
+                                    Reset Password
+                                </a>
+
+                                <p style="font-size: 13px; color: #999999; margin-top: 25px; line-height: 1.4; word-break: break-all;">
+                                    If the button does not work, copy and paste this link into your browser:<br>
+                                    <a href="${data.resetLink}" style="color: #00d2ff;">${data.resetLink}</a>
+                                </p>
 
                                 <p style="font-size: 14px; color: #999999; margin-top: 25px; line-height: 1.4;">
-                                    This code is valid for <strong>15 minutes</strong>. <br>
+                                    This link is valid for <strong>15 minutes</strong>. <br>
                                     If you didn't request this, please ignore this email or contact support if you're concerned about your account security.
                                 </p>
                             </td>
@@ -55,7 +57,7 @@ exports.resetPasswordTemplate = (data)=> {
                         <!-- Footer -->
                         <tr>
                             <td align="center" style="padding: 25px; background-color: #fafafa; font-size: 12px; color: #aaaaaa;">
-                                <p style="margin: 0;">&copy; 2026 SPLITA App. All rights reserved.</p>
+                                <p style="margin: 0;">&copy; 2026 Washington Logistics. All rights reserved.</p>
                                 <p style="margin: 8px 0 0;">
                                     <a href="#" style="color: #00d2ff; text-decoration: none;">Help Center</a> • 
                                     <a href="#" style="color: #00d2ff; text-decoration: none;">Security Tips</a>
@@ -99,7 +101,7 @@ exports.resetPasswordSuccessfulTemplate = (name)=> {
                         <!-- Header -->
                         <tr>
                             <td align="center" style="padding: 30px 20px; background-color: #ffffff; border-bottom: 1px solid #eeeeee;">
-                                <h1 style="margin: 0; color: #00d2ff; font-size: 24px; font-weight: 800; letter-spacing: 1px;">SPLITA</h1>
+                                <h1 style="margin: 0; color: #00d2ff; font-size: 24px; font-weight: 800; letter-spacing: 1px;">Washington Logistics</h1>
                             </td>
                         </tr>
 
@@ -111,12 +113,12 @@ exports.resetPasswordSuccessfulTemplate = (name)=> {
                                 
                                 <h2 style="margin: 0 0 15px; font-size: 22px; font-weight: 700; color: #1a1a1a;">Password Reset Successful</h2>
                                 <p style="font-size: 16px; line-height: 1.5; margin: 0 0 30px; color: #666666;">
-                                    Hi ${name}, your password for <strong>SPLITA</strong> has been successfully updated. You can now log back into your account using your new credentials.
+                                    Hi ${name}, your password for <strong>Washington Logistics</strong> has been successfully updated. You can now log back into your account using your new credentials.
                                 </p>
                                 
                                 <!-- CTA Button -->
-                                <a href="https://splita.app" class="cta-button" style="display: inline-block; background-color: #00d2ff; color: #ffffff; padding: 16px 35px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
-                                    Log In to SPLITA
+                                <a href="${process.env.LOGIN_URL || '#'}" class="cta-button" style="display: inline-block; background-color: #00d2ff; color: #ffffff; padding: 16px 35px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 16px;">
+                                    Log In
                                 </a>
 
                                 <!-- Security Warning -->
@@ -129,7 +131,7 @@ exports.resetPasswordSuccessfulTemplate = (name)=> {
                         <!-- Footer -->
                         <tr>
                             <td align="center" style="padding: 25px; background-color: #fafafa; font-size: 12px; color: #aaaaaa;">
-                                <p style="margin: 0;">&copy; 2026 SPLITA App. All rights reserved.</p>
+                                <p style="margin: 0;">&copy; 2026 Washington Logistics. All rights reserved.</p>
                                 <p style="margin: 8px 0 0;">
                                     <a href="#" style="color: #00d2ff; text-decoration: none;">Security Settings</a> • 
                                     <a href="#" style="color: #00d2ff; text-decoration: none;">Contact Support</a>

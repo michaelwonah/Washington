@@ -13,8 +13,8 @@ paths:
                 - firstName
                 - lastName
                 - email
-                - phoneNumber
                 - password
+                - confirmPassword
               properties:
                 firstName:
                   type: string
@@ -76,7 +76,7 @@ paths:
 
   /api/v1/admin/reset-password:
     post:
-      summary: Reset password 
+      summary: Send reset password link
       tags: [admins]
       requestBody:
         required: true
@@ -86,25 +86,48 @@ paths:
               type: object
               required:
                 - email
-                - otp
-                - password
-                - confirmPassword
               properties: 
                 email:
                   type: string
                   format: email
                   example: leonardo@gmail.com
-                otp:
-                  type: string
-                  example: "123456"
+      responses:
+        "200":
+          description: password reset link sent to email
+        "400":
+          description: invalid credentials or validation error
+
+  /api/v1/admin/reset-password/{token}:
+    post:
+      summary: Reset password with email link token
+      tags: [admins]
+      parameters:
+        - in: path
+          name: token
+          required: true
+          schema:
+            type: string
+          description: Reset password token from the email link
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              type: object
+              required:
+                - password
+                - confirmPassword
+              properties: 
                 password:
                   type: string
                   format: password
+                  example: NewPass@123
                 confirmPassword:
                   type: string
                   format: password
+                  example: NewPass@123
       responses:
         "200":
           description: password reset successfully
         "400":
-          description: invalid credentials, invalid OTP, or validation error
+          description: invalid or expired reset link, or validation error

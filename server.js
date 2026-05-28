@@ -11,11 +11,11 @@ const customerRouter = require('./routes/customer')
 const pickupDeliveryRouter = require('./routes/pickupDelivery')
 const businessNameRouter = require('./routes/businessName')
 const passwordRouter = require('./routes/password')
-const cors = require('cors')
+const cors = require('cors')    
 
 
 const app = express(); 
-app.use(cors())
+app.use(cors());
 app.use(express.json()); 
 
 app.use('/apisDocs', swaggerUi.serve, swaggerUi.setup(swagger))
