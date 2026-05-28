@@ -10,7 +10,7 @@ const options = {
         },
         servers:[
             {
-                url:"https://washington-1.onrender.com/apisDocs",
+                url:"https://washington-1.onrender.com/",
                 description: "The hosted production server"
             },
              {
@@ -19,7 +19,7 @@ const options = {
             } 
         ],
         components:{
-            securitySchemes: { 
+            securitySchemes: {  
                 bearerAuth:{
                     type:'http',
                     scheme: 'bearer',
