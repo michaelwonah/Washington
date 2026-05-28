@@ -15,8 +15,7 @@ paths:
             schema:
               type: object
               required:
-                - firstName
-                - surname
+                - name
                 - email
                 - phoneNumber
                 - address
@@ -28,12 +27,9 @@ paths:
                 - servicePackage
                 - specialInstruction
               properties:
-                firstName:
+                name:
                   type: string
                   example: john
-                surname:
-                  type: string
-                  example: deo
                 email: 
                   type: string
                   example: johndoe@gmail.com
@@ -142,7 +138,7 @@ paths:
           required: true
           schema:
             type: string
-          description: Customer firstName, surname, email or contact
+          description: Customer name, email or contact
       security: 
         - bearerAuth: []
       responses: 
