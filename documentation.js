@@ -10,7 +10,7 @@ const options = {
         },
         servers:[
             {
-                url:"http://washington-1.onrender.com/apisDocs",
+                url:"https://washington-1.onrender.com/apisDocs",
                 description: "The hosted production server"
             },
              {
