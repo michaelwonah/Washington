@@ -169,16 +169,11 @@ exports.bookLaundryValidator = (req, res, next)=>{
 }
 exports.createOrderValidator = (req, res, next)=>{
     const schema = joi.object({
-        firstName: joi.string().trim().pattern(/^[A-Za-z\s]{2,}$/).required().messages({
-        'any.required': "firstName is required",
-         "string.empty": "firstName cannot be empty",
-        'string.pattern.base': "firstName must be at least 2 characters long and contain only letters and spaces"
+        name: joi.string().trim().pattern(/^[A-Za-z\s]{2,}$/).required().messages({
+        'any.required': "name is required",
+         "string.empty": "name cannot be empty",
+        'string.pattern.base': "name must be at least 2 characters long and contain only letters and spaces"
          }),
-        surName: joi.string().trim().pattern(/^[A-Za-z\s]{2,}$/).required().messages({
-            'any.required': "lastName is required",
-            "string.empty": "lastName cannot be empty",
-            'string.pattern.base': "lastName must be at least 2 characters long and contain only letters and spaces"
-        }),
         email: joi.string().email().required().messages({
             'any.required': "email is required",
             'string.empty': "email cannot be empty",
