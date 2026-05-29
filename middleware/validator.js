@@ -108,10 +108,10 @@ exports.bookLaundryValidator = (req, res, next)=>{
          "string.empty": "firstName cannot be empty",
         'string.pattern.base': "firstName must be at least 2 characters long and contain only letters and spaces"
          }),
-        surname: joi.string().trim().pattern(/^[A-Za-z\s]{2,}$/).required().messages({
-            'any.required': "lastName is required",
-            "string.empty": "lastName cannot be empty",
-            'string.pattern.base': "lastName must be at least 2 characters long and contain only letters and spaces"
+        surName: joi.string().trim().pattern(/^[A-Za-z\s]{2,}$/).required().messages({
+            'any.required': "surName is required",
+            "string.empty": "surName cannot be empty",
+            'string.pattern.base': "surName must be at least 2 characters long and contain only letters and spaces"
         }),
         email: joi.string().email().required().messages({
             'any.required': "email is required",
@@ -174,7 +174,7 @@ exports.createOrderValidator = (req, res, next)=>{
          "string.empty": "firstName cannot be empty",
         'string.pattern.base': "firstName must be at least 2 characters long and contain only letters and spaces"
          }),
-        surname: joi.string().trim().pattern(/^[A-Za-z\s]{2,}$/).required().messages({
+        surName: joi.string().trim().pattern(/^[A-Za-z\s]{2,}$/).required().messages({
             'any.required': "lastName is required",
             "string.empty": "lastName cannot be empty",
             'string.pattern.base': "lastName must be at least 2 characters long and contain only letters and spaces"

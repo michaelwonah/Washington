@@ -16,7 +16,7 @@ paths:
               type: object
               required:
                 - firstName
-                - surname
+                - surName
                 - email
                 - phoneNumber
                 - address
